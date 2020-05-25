@@ -2,51 +2,28 @@
 
 class AuthenticationController {
 
-    public $errors = array();
-
     public function validate() {
+        if (!isset($_GET['email']))
+            return call('pages', 'error');
 
-
-        if (isset($_POST["signup-btn"])) {
-
-            if (empty($username)) {
-                $errors["username"] = "Username Required";
-            }
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors["email"] = "Email addresss is invalid";
-            }
-
-            if (empty($email)) {
-                $errors["email"] = "Email Required";
-            }
-
-            if (empty($password)) {
-                $errors["password"] = "Password Required";
-            }
-
-            if ($password !== $passwordconf) {
-                $errors["password"] = "The two password do not match";
-            }
-
-            try {
-                Auth::duplicate_check();
-
-                $row = Auth::all(); 
-                //require_once('');
-            } catch (Exception $e) {
-                $e->getMessage();
-            }
+        try {
+            $row = Auth::duplicate_check($_GET['email']);
+            require_once('../views/auth/signup.php');
+        } catch (Exception $e) {
+            $e->getMessage();
         }
     }
 
-    public function createAdmin() {
-if (auth::duplicate_check()) {
+    public function create() {
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
-        Auth::insertuser();
-
-        $stmt = Auth::all();
-        //require_once('');
-    }
+            require_once('C:\xampp\htdocs\logreg\views\signup.php'); // takes it to the form that they need to sign in
+          
+        }else{
+            Authentication::insertAdmin();
+            $stmt = Authentication::all();
+            //require_once('..//');
+        }
     }
 
     public function loginAdmin() {
@@ -64,6 +41,7 @@ if (auth::duplicate_check()) {
             }
         } else {
             Auth::login();
+            require_once('../views/signup.php');
 
             $rows = Auth::all();
         }

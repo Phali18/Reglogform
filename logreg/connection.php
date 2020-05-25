@@ -8,7 +8,7 @@ class DB {
     public static function getInstance() {
       if (!isset(self::$instance)) {
         $pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-        self::$instance = new PDO("mysql:host=127.0.0.1;dbname=php_mvc", 'root', '', $pdo_options);
+        self::$instance = new PDO("mysql:host=127.0.0.1;dbname=f_project", 'root', '', $pdo_options);
       }
       return self::$instance;
     }
